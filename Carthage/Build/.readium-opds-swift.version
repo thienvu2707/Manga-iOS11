@@ -1,0 +1,18 @@
+{
+  "Mac" : [
+
+  ],
+  "watchOS" : [
+
+  ],
+  "tvOS" : [
+
+  ],
+  "commitish" : "a2d7b2947fc991aeeeeeb7442e1aa4c235278728",
+  "iOS" : [
+    {
+      "name" : "ReadiumOPDS",
+      "hash" : "11a3be88f37e6e9bf15badb7745e81b2a3cde4bea216efe8034b28480d7ad407"
+    }
+  ]
+}

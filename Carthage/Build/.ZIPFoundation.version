@@ -1,0 +1,18 @@
+{
+  "Mac" : [
+
+  ],
+  "watchOS" : [
+
+  ],
+  "tvOS" : [
+
+  ],
+  "commitish" : "5e0ea3a0d5f5e57dbd3822076621403932859f53",
+  "iOS" : [
+    {
+      "name" : "ZIPFoundation",
+      "hash" : "9246f4e69bbba71130542e51e938f6146759c0a286d1ceeca189fca61cc03feb"
+    }
+  ]
+}

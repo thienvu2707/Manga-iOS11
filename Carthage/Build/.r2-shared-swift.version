@@ -1,0 +1,18 @@
+{
+  "Mac" : [
+
+  ],
+  "watchOS" : [
+
+  ],
+  "tvOS" : [
+
+  ],
+  "commitish" : "cfe8b1b792847eccc739625175a98d94aca78168",
+  "iOS" : [
+    {
+      "name" : "R2Shared",
+      "hash" : "873ef85f1afe8a72f0a19cf9444a9c1e2b3fdc325a6637d0aa90f89ab1323e9f"
+    }
+  ]
+}

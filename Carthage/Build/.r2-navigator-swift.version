@@ -1,0 +1,18 @@
+{
+  "Mac" : [
+
+  ],
+  "watchOS" : [
+
+  ],
+  "tvOS" : [
+
+  ],
+  "commitish" : "306766632f398274a950d109bc1a7534c3021d6c",
+  "iOS" : [
+    {
+      "name" : "R2Navigator",
+      "hash" : "571b3a89e74c258160c3eff902f2050e6bf0d0601243a9b6b019b148174a78aa"
+    }
+  ]
+}

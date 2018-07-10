@@ -1,0 +1,27 @@
+{
+  "Mac" : [
+    {
+      "name" : "Minizip",
+      "hash" : "536bd24c3ef3b69e9e8ce708d9e65557d4e730b4f41016d5d385b1179e18f7ec"
+    }
+  ],
+  "watchOS" : [
+    {
+      "name" : "Minizip",
+      "hash" : "d189d60a4ed8feebbb18b8c1656ecba9807a6a5e9df6f827b99729e6f4e77828"
+    }
+  ],
+  "tvOS" : [
+    {
+      "name" : "Minizip",
+      "hash" : "76052e7ab92d6c2f04fc539238a80b9ed7547fd12180ff3114414f621591ac93"
+    }
+  ],
+  "commitish" : "1.4.0",
+  "iOS" : [
+    {
+      "name" : "Minizip",
+      "hash" : "d4dc56960151a643dadb6e2943e86e91eeaf27bc5078b4f90afad60483ea08c2"
+    }
+  ]
+}

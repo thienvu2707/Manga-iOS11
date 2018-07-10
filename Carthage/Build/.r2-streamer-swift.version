@@ -1,0 +1,18 @@
+{
+  "Mac" : [
+
+  ],
+  "watchOS" : [
+
+  ],
+  "tvOS" : [
+
+  ],
+  "commitish" : "60b8a9c9ae3dfb0a7aa6bbd0cc3665adc6a54bf0",
+  "iOS" : [
+    {
+      "name" : "R2Streamer",
+      "hash" : "8a617883a41d6ff7598027d75a8532b84c7dc79254578a5cfdc0407442ff16aa"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+framework module R2Streamer {
+  umbrella header "R2Streamer.h"
+
+  export *
+  module * { export * }
+}
+
+module R2Streamer.Swift {
+    header "R2Streamer-Swift.h"
+    requires objc
+}
