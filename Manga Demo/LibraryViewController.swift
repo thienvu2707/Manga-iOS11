@@ -26,7 +26,7 @@ class LibraryViewController: UIViewController {
 //  weak var delegate: LibraryViewControllerDelegate?
 //  weak var lastFlippedCell: PublicationCell?
   
-//  lazy var loadingIndicator = PublicationIndicator()
+  lazy var loadingIndicator = PublicationIndicator()
   
   @IBOutlet weak var collectionView: UICollectionView! {
     didSet {
@@ -37,7 +37,7 @@ class LibraryViewController: UIViewController {
                               forCellWithReuseIdentifier: "publicationCell")
       collectionView.delegate = self
       collectionView.dataSource = self
-      //collectionView.reloadData()
+//      collectionView.reloadData()
       //collectionView.collectionViewLayout.invalidateLayout()
       
     }
@@ -192,6 +192,7 @@ extension LibraryViewController: UICollectionViewDelegateFlowLayout, UICollectio
     return cell
   }
   
+  // Show cover picture on to home screen
   internal func defaultCover(layout: UICollectionViewFlowLayout?, publication: Publication) -> UITextView {
     let width = layout?.itemSize.width ?? 0
     let height = layout?.itemSize.height ?? 0
@@ -204,6 +205,114 @@ extension LibraryViewController: UICollectionViewDelegateFlowLayout, UICollectio
     titleTextView.text = publication.metadata.title.appending("\n_________") //Dirty styling.
     
     return titleTextView
+  }
+  
+  
+  //MARK: Press EPUB cover to go to comic reading mode
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    let publication = publications[indexPath.row]
+    
+    guard let cell = collectionView.cellForItem(at: indexPath) else { return }
+    cell.contentView.addSubview(self.loadingIndicator)
+    collectionView.isUserInteractionEnabled = false
+    
+    let cleanUp = {
+      self.loadingIndicator.removeFromSuperview()
+      collectionView.isUserInteractionEnabled = true
+    }
+    
+    let successCallBack = { (contentVC: UIViewController) in
+      cleanUp()
+      let backItem = UIBarButtonItem()
+      backItem.title = ""
+      self.navigationItem.backBarButtonItem = backItem
+      self.navigationController?.pushViewController(contentVC, animated: true)
+    }
+    
+    let failCallBack = { (message: String?) in
+      cleanUp()
+      guard let failMessage = message else {return}
+      self.infoAlert(title: "Error", message: failMessage)
+    }
+    
+    loadPublication(publication: publication, success: successCallBack, fail: failCallBack)
+  }
+  
+  func loadPublication(publication: Publication,
+                       success: ((UIViewController)->Void)? = nil,
+                       fail: ((String?) -> Void)? = nil) {
+    
+    // Get publication type
+    let publicationType = PublicationType(rawString: publication.internalData["type"])
+    
+    switch publicationType {
+//    case .cbz:
+//      let cbzViewer = CbzViewController(for: publication, initialIndex: 0)
+//      success?(cbzViewer)
+    case .epub:
+      guard let publicationIdentifier = publication.metadata.identifier else {
+        fail?("Invalid EPUB file")
+        return
+      }
+      // Retrieve last read document/progression in that document.
+      let userDefaults = UserDefaults.standard
+      let index = userDefaults.integer(forKey: "\(publicationIdentifier)-document")
+      let progression = userDefaults.double(forKey: "\(publicationIdentifier)-documentProgression")
+      
+      let epubViewer = EpubViewController(with: publication, atIndex: index, progression: progression)
+      epubViewer.hidesBottomBarWhenPushed = true
+      epubViewer.hidesBottomBarWhenPushed = true
+      success?(epubViewer)
+    default:
+      fail?("Unsupported format")
+    }
+  }
+  
+  internal func infoAlert(title: String, message: String) {
+    let alert         = UIAlertController(title: title, message: message, preferredStyle: .alert)
+    let dismissButton = UIAlertAction(title: "Ok", style: .cancel)
+    
+    alert.addAction(dismissButton)
+    // Present alert.
+    present(alert, animated: true)
+  }
+}
+
+class PublicationIndicator: UIView  {
+  
+  lazy var indicator         : UIActivityIndicatorView =  {
+    
+    let result               = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+    result.translatesAutoresizingMaskIntoConstraints = false
+    self.backgroundColor     = UIColor(white: 0.3, alpha: 0.7)
+    self.addSubview(result)
+    
+    let horizontalConstraint = NSLayoutConstraint(item: result, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1.0, constant: 0.0)
+    let verticalConstraint   = NSLayoutConstraint(item: result, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1.0, constant: 0.0)
+    self.addConstraints([horizontalConstraint, verticalConstraint])
+    
+    return result
+  } ()
+  
+  override func didMoveToSuperview() {
+    super.didMoveToSuperview()
+    
+    guard let superView                            = self.superview else {return}
+    self.translatesAutoresizingMaskIntoConstraints = false
+    
+    let horizontalConstraint = NSLayoutConstraint(item: self, attribute: .centerX, relatedBy: .equal, toItem: superView, attribute: .centerX, multiplier: 1.0, constant: 0.0)
+    let verticalConstraint   = NSLayoutConstraint(item: self, attribute: .centerY, relatedBy: .equal, toItem: superView, attribute: .centerY, multiplier: 1.0, constant: 0.0)
+    let widthConstraint      = NSLayoutConstraint(item: self, attribute: .width, relatedBy: .equal, toItem: superView, attribute: .width, multiplier: 1.0, constant: 0.0)
+    let heightConstraint     = NSLayoutConstraint(item: self, attribute: .height, relatedBy: .equal, toItem: superView, attribute: .height, multiplier: 1.0, constant: 0.0)
+    
+    superView.addConstraints([horizontalConstraint, verticalConstraint, widthConstraint, heightConstraint])
+    
+    self.indicator.startAnimating()
+  }
+  
+  override func removeFromSuperview() {
+    self.indicator.stopAnimating()
+    super.removeFromSuperview()
   }
 }
 

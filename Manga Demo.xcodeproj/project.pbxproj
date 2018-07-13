@@ -48,6 +48,8 @@
 		2E9A350020F45AB200E40356 /* 3.epub in Resources */ = {isa = PBXBuildFile; fileRef = 2E9A34FA20F45AB200E40356 /* 3.epub */; };
 		2E9A350120F45AB200E40356 /* 4.epub in Resources */ = {isa = PBXBuildFile; fileRef = 2E9A34FB20F45AB200E40356 /* 4.epub */; };
 		2E9A350220F45AB200E40356 /* 1.epub in Resources */ = {isa = PBXBuildFile; fileRef = 2E9A34FC20F45AB200E40356 /* 1.epub */; };
+		2E9E2D4020F793D20096FEE1 /* BarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E9E2D3F20F793D20096FEE1 /* BarView.swift */; };
+		2E9E2D4220F79AA30096FEE1 /* TableOfContentsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E9E2D4120F79AA30096FEE1 /* TableOfContentsTableViewController.swift */; };
 		2ECC58F620F11886004419A5 /* CryptoSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2ECC58E720F11885004419A5 /* CryptoSwift.framework */; };
 		2ECC58F720F11886004419A5 /* R2Navigator.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2ECC58E820F11885004419A5 /* R2Navigator.framework */; };
 		2ECC58F820F11886004419A5 /* Minizip.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2ECC58E920F11885004419A5 /* Minizip.framework */; };
@@ -62,6 +64,7 @@
 		2ECC590120F11886004419A5 /* Kingfisher.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2ECC58F220F11886004419A5 /* Kingfisher.framework */; };
 		2ECC590220F11886004419A5 /* ReadiumOPDS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2ECC58F320F11886004419A5 /* ReadiumOPDS.framework */; };
 		2ECC590320F11886004419A5 /* ZIPFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2ECC58F420F11886004419A5 /* ZIPFoundation.framework */; };
+		2EEEEE2A20F497E200DCCCD7 /* EpubViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EEEEE2920F497E200DCCCD7 /* EpubViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -106,6 +109,8 @@
 		2E9A34FA20F45AB200E40356 /* 3.epub */ = {isa = PBXFileReference; lastKnownFileType = file; path = 3.epub; sourceTree = "<group>"; };
 		2E9A34FB20F45AB200E40356 /* 4.epub */ = {isa = PBXFileReference; lastKnownFileType = file; path = 4.epub; sourceTree = "<group>"; };
 		2E9A34FC20F45AB200E40356 /* 1.epub */ = {isa = PBXFileReference; lastKnownFileType = file; path = 1.epub; sourceTree = "<group>"; };
+		2E9E2D3F20F793D20096FEE1 /* BarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarView.swift; sourceTree = "<group>"; };
+		2E9E2D4120F79AA30096FEE1 /* TableOfContentsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableOfContentsTableViewController.swift; sourceTree = "<group>"; };
 		2ECC58E620F11885004419A5 /* ObjectMapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ObjectMapper.framework; path = Carthage/Build/iOS/ObjectMapper.framework; sourceTree = "<group>"; };
 		2ECC58E720F11885004419A5 /* CryptoSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CryptoSwift.framework; path = Carthage/Build/iOS/CryptoSwift.framework; sourceTree = "<group>"; };
 		2ECC58E820F11885004419A5 /* R2Navigator.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = R2Navigator.framework; path = Carthage/Build/iOS/R2Navigator.framework; sourceTree = "<group>"; };
@@ -121,6 +126,7 @@
 		2ECC58F220F11886004419A5 /* Kingfisher.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Kingfisher.framework; path = Carthage/Build/iOS/Kingfisher.framework; sourceTree = "<group>"; };
 		2ECC58F320F11886004419A5 /* ReadiumOPDS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReadiumOPDS.framework; path = Carthage/Build/iOS/ReadiumOPDS.framework; sourceTree = "<group>"; };
 		2ECC58F420F11886004419A5 /* ZIPFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ZIPFoundation.framework; path = Carthage/Build/iOS/ZIPFoundation.framework; sourceTree = "<group>"; };
+		2EEEEE2920F497E200DCCCD7 /* EpubViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpubViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -196,13 +202,16 @@
 			children = (
 				2E1D56E820F39D3F0071CAC7 /* Samples */,
 				2E5A5B8620F10572003663D9 /* AppDelegate.swift */,
-				2E5A5B8820F10572003663D9 /* LibraryViewController.swift */,
-				2E1D56E920F3B2680071CAC7 /* PublicationCell.swift */,
-				2E9A34D720F4498400E40356 /* UIImageExtension.swift */,
 				2E5A5B8D20F10573003663D9 /* Assets.xcassets */,
 				2E5A5B8F20F10573003663D9 /* LaunchScreen.storyboard */,
 				2E5A5B9220F10573003663D9 /* Info.plist */,
 				2E5A5B8A20F10572003663D9 /* Main.storyboard */,
+				2E5A5B8820F10572003663D9 /* LibraryViewController.swift */,
+				2E1D56E920F3B2680071CAC7 /* PublicationCell.swift */,
+				2E9A34D720F4498400E40356 /* UIImageExtension.swift */,
+				2EEEEE2920F497E200DCCCD7 /* EpubViewController.swift */,
+				2E9E2D3F20F793D20096FEE1 /* BarView.swift */,
+				2E9E2D4120F79AA30096FEE1 /* TableOfContentsTableViewController.swift */,
 			);
 			path = "Manga Demo";
 			sourceTree = "<group>";
@@ -305,9 +314,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2E9E2D4020F793D20096FEE1 /* BarView.swift in Sources */,
 				2E5A5B8920F10572003663D9 /* LibraryViewController.swift in Sources */,
 				2E5A5B8720F10572003663D9 /* AppDelegate.swift in Sources */,
 				2E1D56EA20F3B2680071CAC7 /* PublicationCell.swift in Sources */,
+				2EEEEE2A20F497E200DCCCD7 /* EpubViewController.swift in Sources */,
+				2E9E2D4220F79AA30096FEE1 /* TableOfContentsTableViewController.swift in Sources */,
 				2E9A34D820F4498400E40356 /* UIImageExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
