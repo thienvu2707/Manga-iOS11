@@ -12,18 +12,24 @@ import R2Navigator
 
 class EpubViewController: UIViewController {
   
-  var stackView          : UIStackView!
+  let stackView          : UIStackView!
   let navigator          : NavigatorViewController!
   let fixedTopBar        : BarView!
   let fixedBottomBar     : BarView!
   var tableOfContentsTVC : TableOfContentsTableViewController!
-//  var popoverUserconfigurationAnchor: UIBarButtonItem?
+  var popoverUserconfigurationAnchor: UIBarButtonItem?
+  var userSettingNavigationController: UserSettingsNavigationController!
   
   init(with publication: Publication, atIndex index: Int, progression: Double?){
     stackView            = UIStackView(frame: UIScreen.main.bounds)
     navigator            = NavigatorViewController(for: publication, initialIndex: index, initialProgression: progression)
     fixedTopBar          = BarView()
     fixedBottomBar       = BarView()
+    
+    let storyboard = UIStoryboard(name: "UserSettings", bundle: nil)
+    
+    userSettingNavigationController =
+      storyboard.instantiateViewController(withIdentifier: "UserSettingsNavigationController") as! UserSettingsNavigationController
     
     tableOfContentsTVC = TableOfContentsTableViewController(for: navigator.getTableOfContents(), callWhenDismissed: navigator.displaySpineItem(with:))
     super.init(nibName: nil, bundle: nil)
@@ -51,6 +57,13 @@ class EpubViewController: UIViewController {
 
     view.addSubview(stackView)
     
+    /// Set initial UI appearance.
+    if let appearance = navigator.userSettings.appearance {
+      setUIColor(for: appearance)
+    }
+    
+    userSettingNavigationController.modalPresentationStyle = .popover
+    userSettingNavigationController.usdelegate = self
     
     fixedTopBar.delegate    = self
     fixedBottomBar.delegate = self
@@ -69,10 +82,21 @@ class EpubViewController: UIViewController {
       
       if navigator.getTableOfContents().count > 0 {
         //Show tableView of content
-        let spineItemButton = UIBarButtonItem(image: #imageLiteral(resourceName: "menuIcon"), style: .plain, target: self, action: #selector(presentTableofContents))
+        let spineItemButton = UIBarButtonItem(image: #imageLiteral(resourceName: "menuIcon"), style: .plain, target: self,
+                                              action: #selector(presentTableofContents))
         
         barButtons.append(spineItemButton)
+        // User configuration button
+        let userSettingsButton = UIBarButtonItem(image: #imageLiteral(resourceName: "settingsIcon"), style: .plain, target: self,
+                                                 action: #selector(presentUserSettings))
+        barButtons.append(userSettingsButton)
+
+        popoverUserconfigurationAnchor = userSettingsButton
+        
+        navigationItem.setRightBarButtonItems(barButtons,
+                                              animated: true)
       }
+
     }
   
   override func viewDidAppear(_ animated: Bool) {
@@ -83,7 +107,7 @@ class EpubViewController: UIViewController {
     super.viewWillAppear(animated)
     
     navigationController?.hidesBarsOnTap = true
-//    toggleFixBars()
+    toggleFixedBars()
   }
   
   override func viewWillDisappear(_ animated: Bool) {
@@ -114,13 +138,77 @@ extension EpubViewController: UIGestureRecognizerDelegate {
 }
 
 
-extension EpubViewController {
-  @objc func presentTableofContents() {
+extension EpubViewController: UIPopoverPresentationControllerDelegate {
+  
+  
+  @objc func presentUserSettings() {
+    let popoverPresentationController = userSettingNavigationController.popoverPresentationController!
     
-    let backItem                     = UIBarButtonItem()
-    backItem.title                   = ""
+    popoverPresentationController.delegate = self
+    popoverPresentationController.barButtonItem = popoverUserconfigurationAnchor
+    
+    present(userSettingNavigationController, animated: true, completion: nil)
+  }
+  
+  @objc func presentTableofContents() {
+    let backItem = UIBarButtonItem()
+    backItem.title = ""
     navigationItem.backBarButtonItem = backItem
+    // Dismiss userSettings if opened.
+    if let userSettingsTVC = userSettingNavigationController.userSettingsTableViewController {
+      userSettingsTVC.dismiss(animated: true, completion: nil)
+    }
     navigationController?.pushViewController(tableOfContentsTVC, animated: true)
+  }
+  
+  func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle
+  {
+    return .none
+  }
+  
+}
+
+extension EpubViewController: UserSettingsNavigationControllerDelegate {
+  internal func getUserSettings() -> UserSettings {
+    return navigator.userSettings
+  }
+  
+  internal func updateUserSettingsStyle() {
+    navigator.updateUserSettingStyle()
+  }
+  
+  /// Synchronyze the UI appearance to the UserSettings.Appearance.
+  ///
+  /// - Parameter appearance: The appearance.
+  internal func setUIColor(for appearance: UserSettings.Appearance) {
+    let color = appearance.associatedColor()
+    let textColor = appearance.associatedFontColor()
+    
+    navigator.view.backgroundColor = color
+    view.backgroundColor = color
+    //
+    navigationController?.navigationBar.barTintColor = color
+    navigationController?.navigationBar.tintColor = textColor
+    
+    navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: textColor]
+    
+    //
+//    tableOfContentsTVC.setUIColor(for: appearance)
+//    if haveDrm {
+//      drmManagementTVC.appearance = appearance
+//    }
+  }
+  
+  // Toggle hide/show fixed bot and top bars.
+  internal func toggleFixedBars() {
+    let currentValue = navigator.userSettings.scroll?.bool() ?? false
+    
+    UIView.transition(with: fixedTopBar, duration: 0.318, options: .curveEaseOut, animations: {() -> Void in
+      self.fixedTopBar.isHidden = currentValue
+    }, completion: nil)
+    UIView.transition(with: fixedBottomBar, duration: 0.318, options: .curveEaseOut, animations: {() -> Void in
+      self.fixedBottomBar.isHidden = currentValue
+    }, completion: nil)
   }
 }
 

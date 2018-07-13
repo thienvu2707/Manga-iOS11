@@ -16,14 +16,14 @@ import PromiseKit
 import ReadiumOPDS
 import MobileCoreServices
 
-//protocol LibraryViewControllerDelegate: class {
-//  func loadPublication(withId id: String?, completion: @escaping (Drm?, Error?) -> Void) throws
-//}
+protocol LibraryViewControllerDelegate: class {
+  func loadPublication(withId id: String?, completion: @escaping (Drm?, Error?) -> Void) throws
+}
 
 class LibraryViewController: UIViewController {
   
   var publications: [Publication]!
-//  weak var delegate: LibraryViewControllerDelegate?
+  weak var delegate: LibraryViewControllerDelegate?
 //  weak var lastFlippedCell: PublicationCell?
   
   lazy var loadingIndicator = PublicationIndicator()
@@ -49,7 +49,7 @@ class LibraryViewController: UIViewController {
     super.viewDidLoad()
     
     guard let appDelegate = UIApplication.shared.delegate as?  AppDelegate else {return}
-//    delegate = appDelegate
+    delegate = appDelegate
     publications = appDelegate.items.compactMap() { $0.value.0.publication }.sorted { (pA, pB) -> Bool in
       pA.metadata.title < pB.metadata.title
     }
@@ -258,11 +258,29 @@ extension LibraryViewController: UICollectionViewDelegateFlowLayout, UICollectio
       let userDefaults = UserDefaults.standard
       let index = userDefaults.integer(forKey: "\(publicationIdentifier)-document")
       let progression = userDefaults.double(forKey: "\(publicationIdentifier)-documentProgression")
-      
-      let epubViewer = EpubViewController(with: publication, atIndex: index, progression: progression)
-      epubViewer.hidesBottomBarWhenPushed = true
-      epubViewer.hidesBottomBarWhenPushed = true
-      success?(epubViewer)
+      do {
+        // Ask delegate to load that document.
+        try delegate?.loadPublication(withId: publicationIdentifier, completion: { drm, error in
+          // Check if profile is supported.
+          
+          if let _ = error {
+            fail?(nil) // slient error
+            return
+          }
+          
+          let epubViewer = EpubViewController(with: publication,
+                                              atIndex: index,
+                                              progression: progression)
+          epubViewer.hidesBottomBarWhenPushed = true
+          success?(epubViewer)
+        })
+      } catch {
+        fail?(error.localizedDescription)
+      }
+//      let epubViewer = EpubViewController(with: publication, atIndex: index, progression: progression)
+//      epubViewer.hidesBottomBarWhenPushed = true
+//      epubViewer.hidesBottomBarWhenPushed = true
+//      success?(epubViewer)
     default:
       fail?("Unsupported format")
     }

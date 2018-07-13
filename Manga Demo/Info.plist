@@ -23,6 +23,8 @@
 			</array>
 		</dict>
 		<dict>
+			<key>NSPersistentStoreTypeKey</key>
+			<string>Binary</string>
 			<key>LSTypeIsPackage</key>
 			<false/>
 			<key>LSItemContentTypes</key>
@@ -49,6 +51,8 @@
 			<string>Owner</string>
 		</dict>
 		<dict>
+			<key>NSPersistentStoreTypeKey</key>
+			<string>Binary</string>
 			<key>LSTypeIsPackage</key>
 			<false/>
 			<key>LSItemContentTypes</key>
@@ -67,6 +71,8 @@
 			<string>Alternate</string>
 		</dict>
 		<dict>
+			<key>NSPersistentStoreTypeKey</key>
+			<string>Binary</string>
 			<key>LSTypeIsPackage</key>
 			<false/>
 			<key>LSItemContentTypes</key>
